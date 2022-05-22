@@ -9,10 +9,14 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 
 
+
 def loginPage(request):
 
+    # checking if user is already logged in 
     if request.user.is_authenticated:
         return redirect('home')
+
+    # if user is sending some response
     if request.method == "POST":
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -40,13 +44,13 @@ def logoutUser(request):
 
 
 def home(request):
+    # checking if it do have any parameters in it associated with q
     q = request.GET.get('q') if request.GET.get('q') != None else ''
     posts = Post.objects.filter(
         Q(topic__name__icontains=q) |
         Q(name__icontains=q) |
-         Q(description__icontains=q)
-
-        )
+        Q(description__icontains=q)
+    )
  
     topics = Topic.objects.all()
     context = {'posts': posts, 'topics': topics}
@@ -58,14 +62,17 @@ def post(request, pk):
     context = {'post': post}
     return render(request, 'base/post.html', context)
 
+
 @login_required(login_url='login')
 def createPost(request):
     form = PostForm()
+    
     if request.method == 'POST':
         form = PostForm(request.POST)
         if form.is_valid():
             form.save()
             return redirect('home')
+
     context = {'form': form}
     return render(request, 'base/post_form.html', context)
 
