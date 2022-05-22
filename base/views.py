@@ -1,13 +1,15 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib import messages
-from .models import Post, Topic
+from .models import Post, Topic, Message
 from .forms import PostForm
 from django.db.models import Q
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
+
+from django.contrib.admin.views.decorators import staff_member_required
 
 
 
@@ -79,11 +81,21 @@ def home(request):
 
 def post(request, pk):
     post = Post.objects.get(id=pk)
-    context = {'post': post}
+    post_messages = post.message_set.all().order_by('-created')
+
+    if request.method == "POST":
+        message = Message.objects.create(
+            user = request.user,
+            post = post,
+            body = request.POST.get('body')
+        )
+        return redirect('post', pk=post.id)
+    context = {'post': post, 'post_messages': post_messages}
     return render(request, 'base/post.html', context)
 
 
-@login_required(login_url='login')
+# @login_required(login_url='login')
+@staff_member_required()
 def createPost(request):
     form = PostForm()
     
@@ -128,4 +140,20 @@ def deletePost(request, pk):
         return redirect('home')
 
     context = {'obj': post}
+    return render(request, 'base/delete.html', context)
+
+
+
+@login_required(login_url='login')
+def deleteMessage(request, pk):
+    message = Message.objects.get(id=pk)
+
+    if request.user != message.user:
+        return HttpResponse('You are not allowed here')
+
+    if request.method == "POST":
+        message.delete()
+        return redirect('home')
+
+    context = {'obj': message}
     return render(request, 'base/delete.html', context)
