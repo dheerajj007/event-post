@@ -94,6 +94,12 @@ def post(request, pk):
     return render(request, 'base/post.html', context)
 
 
+def userProfile(request, pk):
+    user = User.objects.get(id=pk)
+    posts = user.post_set.all()
+    context = {'user': user, 'posts':posts}
+    return render(request, 'base/profile.html', context)
+
 # @login_required(login_url='login')
 @staff_member_required()
 def createPost(request):
