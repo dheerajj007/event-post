@@ -1,16 +1,19 @@
+
+
 {% for post in posts %}
-            <div>
-
-                {% if request.user == post.creator %}
-                <a href="{% url 'update-post' post.id %}">Edit</a>
-                <a href="{% url 'delete-post' post.id %}">Delete</a>
-                {% endif %}
-                <a href="{% url 'user-profile' post.creator.id %}">@{{post.creator.username}}</a>
-
-                <a href="{% url 'post' post.id %}">
-                    <h5>{{post.name}}</h5>
-                </a>
-                <small>{{post.topic.name}}</small>
-                    <hr>
-            </div>
+<div>
+   <a href="{% url 'post' post.id %}">
+      <h5>{{post.name}}    </h5>
+   </a>
+   {% if request.user == post.creator %}
+   <a href="{% url 'update-post' post.id %}">Edit</a>
+   <a href="{% url 'delete-post' post.id %}">Delete</a>
+   {% endif %}
+   <a href="{% url 'user-profile' post.creator.id %}">@{{post.creator.username}}</a>
+   <small>{{post.created|timesince}} ago </small>
+   <p>{{post.description|truncatechars:255}}</p>
+   <small>{{post.topic.name}}</small>
+   <hr>
+</div>
 {% endfor %}
+

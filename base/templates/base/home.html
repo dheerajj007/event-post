@@ -1,36 +1,25 @@
+
+
 {% extends 'main.html' %}
-
-
 {% block content %}
-<h1>Home Page</h1>
-
 <style>
-    .home-container{
-        display: grid;
-        grid-template-columns: 1fr 3fr;
-    }
+   .home-container{
+   display: grid;
+   grid-template-columns: 1fr 3fr;
+   }
 </style>
-
 <div class="home-container">
-
-    <!-- block for showing topics -->
-    <div class="topic-container">
-        {% include 'base/topic_component.html' %}
-    </div>
-
-    <!-- block for showing posts -->
-    <div class="post-container">
-        {% if request.user.is_staff %}
-        <a href="{% url 'create-post' %}">Create Post</a>
-        {% endif %}
-
-        {% include 'base/feed_component.html' %}
-    </div>
+   <!-- block for showing topics -->
+   <div class="topic-container">
+      {% include 'base/topic_component.html' %}
+   </div>
+   <!-- block for showing posts -->
+   <div class="post-container">
+      <!-- {% if request.user.is_staff %}
+         <a href="{% url 'create-post' %}">Create Post</a>
+         {% endif %} -->
+      {% include 'base/feed_component.html' %}
+   </div>
 </div>
-
-    
-    
-
 {% endblock content %}
-
 
