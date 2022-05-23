@@ -8,7 +8,7 @@
                 <a href="{% url 'user-profile' post.creator.id %}">@{{post.creator.username}}</a>
 
                 <a href="{% url 'post' post.id %}">
-                    <h5>{{post.id}} -- {{post.name}}</h5>
+                    <h5>{{post.name}}</h5>
                 </a>
                 <small>{{post.topic.name}}</small>
                     <hr>
