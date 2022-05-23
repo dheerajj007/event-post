@@ -14,12 +14,12 @@
 <div class="home-container">
 
     <!-- block for showing topics -->
-    <div>
+    <div class="topic-container">
         {% include 'base/topic_component.html' %}
     </div>
 
     <!-- block for showing posts -->
-    <div>
+    <div class="post-container">
         {% if request.user.is_staff %}
         <a href="{% url 'create-post' %}">Create Post</a>
         {% endif %}
