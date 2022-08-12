@@ -1,4 +1,4 @@
-# mnnit-news
+# Event-Post
 
 Team-Name: mca_lads
 
